@@ -1,0 +1,82 @@
+name: New Content Block
+identifier: new_content_block
+description: This is the content block New Content Block
+group: default
+placeAt: textmedia
+position: after
+fields:
+  - identifier: palette1
+    type: Palette
+    fields: header, bodytext
+  - identifier: header
+    useExistingField: true
+    type: Text
+    required: true
+    description: The header for this element.
+    max: 30
+    l10n_mode: exclude
+    classes: headerclass1, headerclass2
+  - identifier: linebreak1
+    type: Linebreak
+  - identifier: bodytext
+    useExistingField: true
+    type: Textarea
+    enableRichtext: true
+    description: The main text area of this element.
+  - identifier: select1
+    type: Select
+    description: Select description
+    l10n_mode: prefixLangTitle
+    fieldControl:
+      addRecord:
+        disabled: false
+    renderType: selectMultipleSideBySide
+    items:
+      -
+        label: label1
+        value: value1
+      -
+        label: label2
+        value: 2
+
+  - identifier: table1
+    type: Collection
+    label: table1 label
+    description: table1 description
+    fields:
+      - identifier: paletteInTable1
+        type: Palette
+        fields:
+          - text1
+          - date1
+      - identifier: text1
+        label: text1 label
+        type: Text
+        classes: testClass1
+      - identifier: date1
+        type: Datetime
+        dbType: datetime
+        classes: aClassInNewCss1
+      - identifier: uuid1
+        type: Uuid
+        enableCopyToClipboard: true
+        required: true
+        size: 20
+      - identifier: table2
+        type: Collection
+        label: table2 label
+        description: table2 description
+        fields:
+          identifier: textInTable2
+          type: Text
+          classes: textincol2Class1, textincol2Class2, textincol2Class3
+      - identifier: selectInTable1
+        type: Select
+        renderType: selectSingle
+        items:
+          -
+            label: test1label
+            value: test1
+          -
+            label: test2label
+            value: test2

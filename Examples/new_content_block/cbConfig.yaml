@@ -1,0 +1,31 @@
+config:
+  usePartials: true
+  useClasses: true
+  extensionsPath: './packages'
+  Tokens:
+    identifierOpeningToken: "&%!§(§?%&"
+    identifierClosingToken: "&%?§)§!%&"
+  Strict: true                          # Most inputs are proofed for validity and errors are thrown if they do not match the criteria.
+    # If true, the fields.yaml will be parsed as well. This results in cross-development with the tt_content.php
+  crossParsing: false
+  #@setting bool autoSanitizeInteger
+  # Extracts an integer number from a string if possible when set to true.
+  #Throws error elsewise. Does not apply on integers which can be mixed with alpha characters.
+  # false: 'I'm 10!' -> throws error - true: 'I'm 10!' -> 10
+  autoSanitizeInteger: false
+  deepFieldSearch: true
+  parseFiles: true
+    # If true, the ArrayParser will evaluate arrays with eval, a custom parser is used if set to false
+  useEval: false
+  surpressedWarnings: 
+  customRenderTypes: test->testrender
+  propertySpecific:
+    Text:
+      default:
+        allowLongerThanMaxDbLen: false  # Will throw an error if the default value is longer than maximum length of varchar when set to false and Strict is true
+    None:
+      format.:
+        user:
+          testIfClassAndMethodExists: true # Test if the class and method provided in the setting 'userFunc' exists
+    Category:
+      proofTableExistence: true # 

@@ -1,0 +1,25 @@
+<html
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:cb="http://typo3.org/ns/DS/CbBuilder/ViewHelpers"
+	data-namespace-typo3-fluid="true"
+>
+
+	<f:layout name="Default" />
+
+	<f:section name="Main">
+<!--&%!§(§?%&new_content_block&%?§)§!%& DO NOT DELTE THIS PART--> 
+<f:asset.css identifier="cb_new_content_block_fe_new_css" href="EXT:cb_builder/Resources/Public/cb/new_content_block/assets/frontend/new.css" />
+<f:asset.css identifier="cb_new_content_block_fe_main_css" href="EXT:cb_builder/Resources/Public/cb/new_content_block/assets/frontend/main.css" />
+
+<!--&%!§(§?%&new_content_block&%?§)§!%& DO NOT DELTE THIS PART-->
+		<f:if condition="{cbData} && {cbData.partial}">
+			<f:then>
+				<f:render partial="{cbData.partial}" arguments="{_all}" />
+			</f:then>
+			<f:else>
+				<f:render partial="DefaultPartial" arguments="{_all}" />
+			</f:else>
+		</f:if>
+		
+	</f:section>
+
