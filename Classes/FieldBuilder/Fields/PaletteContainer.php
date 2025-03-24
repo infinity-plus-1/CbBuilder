@@ -206,6 +206,35 @@ final class PaletteContainer
         }
     }
 
+    public function paletteToArray(): array
+    {
+        $palette = [];
+        $properties = get_object_vars($this);
+        foreach ($properties as $key => $property) {
+            switch ($key) {
+                case 'parentTable':
+                case 'table':
+                    break;
+                case 'showitem':
+                    $palette['fields'] = implode(', ', $property);
+                    break;
+                default:
+                    if (
+                        (is_string($property) && $property !== '')
+                        || (is_int($property) && $property >= 0)
+                        || (is_float($property) && $property >= 0.0)
+                        || (is_array($property) && !empty($property))
+                        || (is_bool($property) && $property !== null)
+                    ) {
+                        $palette[$key] = $property;
+                    }
+                    break;
+            }
+        }
+        $palette['type'] = 'Palette';
+        return $palette;
+    }
+
     /**
      * Convert an array to a palette.
      *

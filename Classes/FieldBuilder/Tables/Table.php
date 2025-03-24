@@ -221,6 +221,11 @@ class Table
     protected array $fields = [];
 
     /**
+     * All elements, including palettes, sorted.
+     */
+    protected array $sortedElements = [];
+
+    /**
      * Array fields defined for the table.
      */
     protected array $arrayFields = [];
@@ -655,8 +660,8 @@ class Table
                         } elseif ($isLocaleField === 0 || $isLocaleField === -1) {
                             $this->fields[$identifier] = $collection->getCollectionContainer();
                         }
-                        
                         $this->fields[$identifier] = $collection;
+                        $this->sortedElements[$identifier] = $collection;
                         break;
                     case 'Palette':
                         $palette = Field::createField($field, $this->table, $this);
@@ -666,6 +671,7 @@ class Table
                             if ($cPalette instanceof PaletteContainer) {
                                 $cPalette->mergePalettes($palette);
                                 $this->palettes[$identifier] = $cPalette;
+                                $this->sortedElements[$identifier] = $cPalette;
                             } else {
                                 throw new Exception (
                                     "'Table.php' property '\$this->palettes' palette '$identifier' is not an " .
@@ -674,6 +680,7 @@ class Table
                             }
                         } else {
                             $this->palettes[$identifier] = $palette;
+                            $this->sortedElements[$identifier] = $palette;
                         }
                         break;
                     default:
@@ -681,8 +688,10 @@ class Table
                         $type = 'DS\CbBuilder\FieldBuilder\Fields\\' . $field['type'] . 'Field';
                         if ($isLocaleField === 1 && isset($this->fields[$identifier]) && is_a($this->fields[$identifier], $type)) {
                             $this->fields[$identifier]->mergeField($fieldObj);
+                            $this->sortedElements[$identifier] = $fieldObj;
                         } elseif ($isLocaleField === 0 || $isLocaleField === -1) {
                             $this->fields[$identifier] = $fieldObj;
+                            $this->sortedElements[$identifier] = $fieldObj;
                         }
                         break;
                 }
@@ -946,6 +955,35 @@ class Table
     }
 
     /**
+     * Sort the output array that will be written to fields.yaml to the original order of
+     *  fields.yaml. Fields declared in files only will be appended to the end of the corresponding
+     *  table.
+     * 
+     * @param array $parsedTableArray The array representation of this table class.
+     * 
+     * @return array The sorted $parsedTableArray
+     */
+    public function sortFields(array $parsedTableArray): array
+    {
+        $sortedFields = $this->sortedElements;
+        $sortedParsedTableArray = [];
+        foreach ($sortedFields as $key => $value) {
+            if (array_key_exists($key, $parsedTableArray)) {
+                $sortedParsedTableArray[$key] = $parsedTableArray[$key];
+                unset($parsedTableArray[$key]);
+            } else {
+                if ($value instanceof PaletteContainer) {
+                    $sortedParsedTableArray[$key] = $value->paletteToArray();
+                }
+            }
+        }
+        foreach ($parsedTableArray as $key => $value) {
+            $sortedParsedTableArray[$key] = $value;
+        }
+        return $sortedParsedTableArray;
+    }
+
+    /**
      * Parse and generate the table content.
      */
     public function parseTable(): array
@@ -954,9 +992,8 @@ class Table
         $tableType = 0;
         $parsedTableArray = [];
         if (CbBuilderConfig::isCrossParsing()) {
-            $parsedTableArray = $this->tableToArray();
+            $parsedTableArray = $this->sortFields($this->tableToArray());
         }
-
         $this->setDefaultCtrl();
         if ($this instanceof TtContentTable) {
             $meta = $this->setMeta();
@@ -970,7 +1007,12 @@ class Table
         }
         foreach ($this->fields as $field) {
             if ($field instanceof CollectionTable) {
-                $field->parseTable();
+                if (CbBuilderConfig::isCrossParsing() && isset($parsedTableArray[$field->getTable()]['fields'])) {
+                    $parsedTableArray[$field->getTable()]['fields'] = $field->parseTable();
+                } else {
+                    $field->parseTable();
+                }
+                
             }
         }
 
