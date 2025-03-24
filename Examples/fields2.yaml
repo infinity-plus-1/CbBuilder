@@ -1,0 +1,175 @@
+name: Eegrohrhr
+identifier: eegrohrhr
+description: 'This is the content block Eegrohrhr'
+icon: TestIcon
+group: default
+placeAt: textmedia
+position: after
+fields:
+  dater:
+    type: Datetime
+    identifier: dater
+    useExistingField: false
+    label: dater
+    classes: ''
+    default: 1742396250
+  grouper:
+    type: Group
+    identifier: grouper
+    useExistingField: false
+    label: grouper
+    classes: ''
+    allowed: be_users
+    suggestOptions:
+      default:
+        additionalSearchFields: 'nav_title, url'
+        addWhere: rrior
+  imager:
+    type: Image
+    identifier: imager
+    useExistingField: false
+    label: imager
+    classes: ''
+    cropVariants:
+      mobile:
+        allowedAspectRatios:
+          4by3:
+            title: 4/3
+            value: 1.3333333333333
+        focusArea:
+          x: 0.33333333333333
+          'y': 0.5
+          width: 0.4
+          height: 0.25
+        title: mobile
+  noner:
+    type: None
+    identifier: noner
+    useExistingField: false
+    label: noner
+    classes: ''
+    format: float
+    format.:
+      precision: '8'
+  numberer:
+    type: Number
+    identifier: numberer
+    useExistingField: false
+    label: numberer
+    classes: ''
+    slider:
+      step: 234
+    valuePicker:
+      mode: append
+      items:
+        -
+          - rirjor
+          - 3.45
+        -
+          - ejrru
+          - 123
+  tecol:
+    type: Collection
+    identifier: tecol
+    useExistingField: false
+    label: tecol
+    classes: ''
+    childTable: tecol
+    foreign_field: tecol
+    foreign_table: tecol
+    fields:
+      sl:
+        type: Select
+        identifier: sl
+        useExistingField: false
+        label: sl
+        renderType: selectTree
+        classes: ''
+        foreign_table: tt_content
+        items:
+          -
+            label: label1
+            value: value1
+          -
+            label: label2
+            value: 123
+        treeConfig:
+          parentField: header
+          startingPoints: '1,43,47'
+      sg:
+        type: Slug
+        identifier: sg
+        useExistingField: false
+        label: sg
+        classes: ''
+        generatorOptions:
+          fields:
+            - header
+          fieldSeparator: /
+          prefixParentPageSlug: true
+          replacements:
+            /: ''
+      tecol2:
+        type: Collection
+        identifier: tecol2
+        useExistingField: false
+        label: tecol2
+        classes: ''
+        childTable: tecol2
+        foreign_field: tecol2
+        foreign_table: tecol2
+        fields:
+          testtext:
+            type: Text
+            identifier: testtext
+            useExistingField: false
+            label: testtext
+            classes: ''
+  pw:
+    type: Password
+    identifier: pw
+    useExistingField: false
+    label: pw
+    classes: ''
+    fieldControl:
+      passwordGenerator:
+        renderType: passwordGenerator
+        options:
+          title: testTitle
+          allowEdit: false
+          passwordRules:
+            length: 8
+            lowerCaseCharacters: true
+            random: base64
+            specialCharacters: true
+            upperCaseCharacters: true
+  pwler:
+    type: Password
+    identifier: pwler
+    useExistingField: false
+    label: pwler
+    classes: ''
+    passwordGenerator:
+      renderType: passwordGenerator
+  header:
+    type: Text
+    identifier: header
+    useExistingField: true
+    label: header
+    description: 'The header for this element.'
+    classes: 'test123, test1234'
+    required: true
+  linebreak:
+    type: Linebreak
+    identifier: linebreak
+    useExistingField: false
+    label: linebreak
+    classes: ''
+  bodytext:
+    type: Textarea
+    identifier: bodytext
+    useExistingField: true
+    label: bodytext
+    description: 'The main text area of this element.'
+    classes: test12345
+    enableRichtext: true

@@ -1,0 +1,94 @@
+name: 'New Content Block'
+identifier: new_content_block
+description: 'This is the content block New Content Block'
+group: default
+placeAt: textmedia
+position: after
+fields:
+  tabelle1:
+    type: Collection
+    identifier: tabelle1
+    useExistingField: false
+    label: tabelle1
+    classes: ''
+    childTable: tabelle1
+    appearance:
+      collapseAll: false
+    foreign_field: tabelle1
+    foreign_table: tabelle1
+    fields:
+      auswahl1:
+        type: Select
+        identifier: auswahl1
+        useExistingField: false
+        label: auswahl1
+        renderType: selectSingle
+        classes: ''
+        items:
+          -
+            label: label1
+            value: value1
+          -
+            label: label2
+            value: value2
+      tabelle2:
+        type: Collection
+        identifier: tabelle2
+        useExistingField: false
+        label: tabelle2
+        classes: ''
+        childTable: tabelle2
+        foreign_field: tabelle2
+        foreign_table: tabelle2
+        fields:
+          checkbox1:
+            type: Checkbox
+            identifier: checkbox1
+            useExistingField: false
+            label: checkbox1
+            classes: ''
+            items:
+              -
+                label: label1
+              -
+                label: label2
+  header:
+    type: Text
+    identifier: header
+    useExistingField: true
+    label: header
+    description: 'The header for this element.'
+    classes: ''
+    required: true
+  linebreak:
+    type: Linebreak
+    identifier: linebreak
+    useExistingField: false
+    label: linebreak
+    classes: ''
+  bodytext:
+    type: Textarea
+    identifier: bodytext
+    useExistingField: true
+    label: bodytext
+    description: 'The main text area of this element.'
+    classes: ''
+    enableRichtext: true
+  subheader:
+    type: Password
+    identifier: subheader
+    useExistingField: true
+    label: subheader
+    classes: ''
+    fieldControl:
+      passwordGenerator:
+        renderType: passwordGenerator
+        options:
+          title: testTitel
+          allowEdit: true
+          passwordRules:
+            length: 10
+            lowerCaseCharacters: true
+            random: base64
+            specialCharacters: true
+            upperCaseCharacters: true
