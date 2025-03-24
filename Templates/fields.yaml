@@ -1,0 +1,9 @@
+name: {%%name%%}
+identifier: {%%identifier%%}
+description: {%%desc%%}
+group: {%%group%%}
+placeAt: {%%placeAt%%}
+position: {%%position%%}
+fields:
+  {%%basicInclude%%}
+    

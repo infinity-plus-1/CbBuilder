@@ -1,0 +1,38 @@
+[
+    'ctrl' => [
+        'label' => 'uid',
+        'label_alt' => 'pid',
+        'descriptionColumn' => '',
+        'sortby' => 'sorting',
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'editlock' => 'editlock',
+        'title' => '',
+        'delete' => 'deleted',
+        'versioningWS' => true,
+        'groupName' => 'content',
+        'hideAtCopy' => true,
+        'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
+        'copyAfterDuplFields' => 'sys_language_uid',
+        'useColumnsForDefaultValues' => 'sys_language_uid',
+        'transOrigPointerField' => 'l18n_parent',
+        'transOrigDiffSourceField' => 'l18n_diffsource',
+        'languageField' => 'sys_language_uid',
+        'translationSource' => 'l10n_source',
+        'previewRenderer' => 'TYPO3\\CMS\\Backend\\Preview\\StandardContentPreviewRenderer',
+        'enablecolumns' => [
+            'disabled' => 'hidden',
+            'starttime' => 'starttime',
+            'endtime' => 'endtime',
+            'fe_group' => 'fe_group',
+        ],
+        'typeicon_classes' => [
+            'default' => 'mimetypes-x-content-text',
+            'header' => 'mimetypes-x-content-header',
+        ],
+        'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
+    ],
+]

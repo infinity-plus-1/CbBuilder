@@ -1,0 +1,21 @@
+{
+    "name": "ds/cb-builder",
+    "description": "Kickstart content blocks via the console and add fields using YAML or corresponding PHP files. This approach focuses on reusability for content blocks and includes handy PHP classes and FLUID helpers.",
+    "type": "typo3-cms-extension",
+    "license": [
+        "GPL-2.0-or-later"
+    ],
+    "require": {
+        "typo3/cms-core": "^13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "DS\\CbBuilder\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "cb_builder"
+        }
+    }
+}

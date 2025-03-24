@@ -1,0 +1,17 @@
+'header' => [
+    'label' => 'Element header',
+    'description' => 'Write your fancy heading line here.',
+    'config' =>
+    [
+        'type' => 'input',
+        'required' => true
+    ]
+],
+'bodytext' => [
+    'label' => 'Element textarea',
+    'description' => 'Let your creativity take its course...',
+    'config' => [
+        'type' => 'text',
+        'enableRichtext' => true
+    ]
+]

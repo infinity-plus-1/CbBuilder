@@ -1,0 +1,46 @@
+config:
+  # Whether to show and enable partials for content blocks
+  usePartials: true
+  # Whether to show and enable classes for content elements
+  useClasses: true
+  # Path to the extension of the content block
+  extensionsPath: {%%Path%%}
+  # Custom wrapper tokens can be defined here. Use the function Wrapper::changeWrapTokens to change existing tokens in files.
+  Tokens:
+    identifierOpeningToken: "&%!§(§?%&"
+    identifierClosingToken: "&%?§)§!%&"
+  # Most inputs are validated for validity, and errors are thrown if they do not match the criteria.
+  Strict: true
+  # If true, the fields.yaml will be parsed as well. This results in cross-development with the tt_content.php
+  crossParsing: false
+
+  #@setting bool autoSanitizeInteger
+  # Extracts an integer number from a string if possible when set to true.
+  # Throws an error otherwise. Does not apply to integers that can be mixed with alpha characters.
+  # false: 'I'm 10!' -> throws an error - true: 'I'm 10!' -> 10
+  autoSanitizeInteger: false
+
+  # Fields will be found even in multi-dimensional arrays
+  deepFieldSearch: true
+  # Will scan PHP files in Configuration/TCA
+  parseFiles: true
+
+  # If true, the ArrayParser will evaluate arrays using eval; a custom parser is used if set to false
+  useEval: false
+
+  # Enter codes from warnings here to suppress them
+  suppressedWarnings: 
+
+  # You can add your custom renderTypes by adding a comma-separated list in the format Fieldname->renderTypeName, e.g.:
+  # Custom->myFirstRenderType, Text->characterCounter, ...
+  customRenderTypes:
+
+  # Property specific settings
+  propertySpecific:
+    Text:
+      default:
+        allowLongerThanMaxDbLen: false  # Will throw an error if the default value is longer than the maximum length of varchar when set to false and Strict is true
+    None:
+      format.:
+        user:
+          testIfClassAndMethodExists: true # Test if the class and method provided in the setting 'userFunc' exist

@@ -1,0 +1,28 @@
+<html
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:cb="http://typo3.org/ns/DS/CbBuilder/ViewHelpers"
+	data-namespace-typo3-fluid="true"
+>
+
+
+
+<!-- DO NOT DELETE ANYTHING BETWEEN THIS -->
+<!-- USE PARTIALS TO RENDER THE CONTENT BLOCK -->
+<f:spaceless>
+	<f:layout name="Default" />
+	<f:section name="Main">
+		<!--&%!§(§?%&{%%Identifier%%}&%?§)§!%& DO NOT DELTE THIS PART--> 
+
+		<!--&%!§(§?%&{%%Identifier%%}&%?§)§!%& DO NOT DELTE THIS PART-->
+		<f:if condition="{cbData} && {cbData.partial}">
+			<f:then>
+				<f:render partial="{cbData.partial}" arguments="{_all}" />
+			</f:then>
+			<f:else>
+				<f:render partial="DefaultPartial" arguments="{_all}" />
+			</f:else>
+		</f:if>
+		
+	</f:section>
+</f:spaceless>
+<!-- AND THIS LINE -->
