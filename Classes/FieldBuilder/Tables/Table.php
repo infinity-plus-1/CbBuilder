@@ -939,6 +939,12 @@ class Table
         return null;
     }
 
+
+    /**
+     * Convert the Table class object into an array.
+     * 
+     * @return array The parsed array.
+     */
     public function tableToArray(): array
     {
         $tableArray = [];
@@ -955,13 +961,12 @@ class Table
     }
 
     /**
-     * Sort the output array that will be written to fields.yaml to the original order of
-     *  fields.yaml. Fields declared in files only will be appended to the end of the corresponding
-     *  table.
+     * Sort the output array that will be written to fields.yaml, preserving the original order of 
+     * fields.yaml. Fields declared only in files will be appended to the end of the corresponding table.
      * 
-     * @param array $parsedTableArray The array representation of this table class.
+     * @param array $parsedTableArray The array representation of this Table class.
      * 
-     * @return array The sorted $parsedTableArray
+     * @return array The sorted $parsedTableArray.
      */
     public function sortFields(array $parsedTableArray): array
     {

@@ -206,6 +206,11 @@ final class PaletteContainer
         }
     }
 
+    /**
+     * Convert the Palette class object into an array.
+     * 
+     * @return array The parsed array.
+     */
     public function paletteToArray(): array
     {
         $palette = [];
