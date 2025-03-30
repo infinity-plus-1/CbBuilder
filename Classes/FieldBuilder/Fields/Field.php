@@ -147,19 +147,19 @@ class Field
      * Mapping of render types to their respective subtypes.
      */
     const RENDER_TYPE_MAP = [
-        'Select' => [
+        'select' => [
             'selectSingle', 'selectSingleBox', 'selectCheckBox', 'selectMultipleSideBySide', 'selectTree'
         ],
-        'Textarea' => [
+        'textarea' => [
             'belayoutwizard', 'textTable', 'codeEditor'
         ],
-        'Checkbox' => [
+        'checkbox' => [
             'checkboxToggle', 'checkboxLabeledToggle'
         ],
-        'Custom' => [
+        'custom' => [
             '*'
         ],
-        'Password' => [
+        'password' => [
             'passwordGenerator'
         ]
     ];
@@ -199,8 +199,8 @@ class Field
             );
         }
 
-        if (isset(self::RENDER_TYPE_MAP[$this->type])) {
-            if (in_array($renderType, self::RENDER_TYPE_MAP[$this->type])) {
+        if (isset(self::RENDER_TYPE_MAP[strtolower($this->type)])) {
+            if (in_array($renderType, self::RENDER_TYPE_MAP[strtolower($this->type)])) {
                 return;
             }
         }
@@ -229,7 +229,7 @@ class Field
             "To fix this, add an entry in the format 'Fieldtype->renderTypeIdentifier' to 'customRenderTypes' in 'cbConfig.yaml'. For example:\n" .
             "customRenderTypes: Fieldtype->renderTypeIdentifier, Select->myFancyRenderType, ...\n" .
             "IMPORTANT: The custom render type must be registered in the 'ext_localconf.php' already.\n" .
-            "Alternatively, use one of the default render types: " . implode(', ', self::RENDER_TYPE_MAP[$this->type]) . "\n" .
+            "Alternatively, use one of the default render types: " . implode(', ', self::RENDER_TYPE_MAP[strtolower($this->type)]) . "\n" .
             "You can suppress this warning by adding '763767178' to 'suppressedWarnings' in 'cbConfig.yaml'."
         );
     }

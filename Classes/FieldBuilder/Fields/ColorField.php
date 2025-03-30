@@ -432,23 +432,26 @@ final class ColorFieldConfig extends Config
             if (!is_array($item)) {
                 throw new Exception(
                     "'Color' field '$identifier' configuration 'valuePicker['items'][$i]' must be of type array. " .
-                    "Fix:\nvaluePicker:\n  items:\n    - key1: #ABC\n    - key2: #AA11BB\n    - key3: AA11BB22"
+                    "Fix:\nvaluePicker:\n  items:\n    -\n      - 'key1'\n      - '#ABC'\n    -\n      " .
+                    "- 'key2'\n      - '#AA11BB'\n    -\n      - 'key3'\n      - '#AA11BB22'"
                 );
             }
-            if (count($item) !== 1) {
+            if (count($item) !== 2) {
                 throw new Exception(
-                    "'Color' field '$identifier' configuration 'valuePicker['items'][$i]' must contain exactly one key => value entry." .
-                    "Fix:\nvaluePicker:\n  items:\n    - key1: #ABC\n    - key2: #AA11BB\n    - key3: AA11BB22"
+                    "'Color' field '$identifier' configuration 'valuePicker['items'][$i]' must be of type array. " .
+                    "Fix:\nvaluePicker:\n  items:\n    -\n      - 'key1'\n      - '#ABC'\n    -\n      " .
+                    "- 'key2'\n      - '#AA11BB'\n    -\n      - 'key3'\n      - '#AA11BB22'"
                 );
             }
-            $key = array_key_first($item);
+            $key = $item[0];
             if (!is_string($key)) {
                 throw new Exception(
-                    "'Color' field '$identifier' configuration 'valuePicker['items'][$i][0]' key must be of type string." .
-                    "Fix:\nvaluePicker:\n  items:\n    - key1: #ABC\n    - key2: #AA11BB\n    - key3: AA11BB22"
+                    "'Color' field '$identifier' configuration 'valuePicker['items'][$i]' must be of type array. " .
+                    "Fix:\nvaluePicker:\n  items:\n    -\n      - 'key1'\n      - '#ABC'\n    -\n      " .
+                    "- 'key2'\n      - '#AA11BB'\n    -\n      - 'key3'\n      - '#AA11BB22'"
                 );
             }
-            $value = $item[$key];
+            $value = $item[1];
             $this->_validateColorHex(
                 $value, $config, '',
                 "'Color' field '$identifier' configuration 'valuePicker['items'][$i][0]' value must be of type string.",

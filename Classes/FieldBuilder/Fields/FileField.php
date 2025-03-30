@@ -690,7 +690,7 @@ final class FileFieldConfig extends Config
     /**
      * Whether the field is read-only.
      */
-    protected bool $readOnly = false;
+    protected ?bool $readOnly = NULL;
 
     /**
      * Get the array of allowed file types or extensions.
