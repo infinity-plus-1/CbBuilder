@@ -41,6 +41,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
@@ -775,6 +776,43 @@ final class FileCreater
             ];
             self::updateIconsPhp($parsedFile, $stdContent);
         }
+    }
+
+    const FILES_MAP_PATH = __DIR__ . '/../../Configuration/filesMap.yaml';
+
+    public static function getFieldsMap(string $identifier): array
+    {
+        $filesystem = new Filesystem();
+        if ($filesystem->exists(self::FILES_MAP_PATH)) {
+            $parsedYaml = Yaml::parseFile(self::FILES_MAP_PATH);
+            if (isset($parsedYaml[$identifier]) && is_array($parsedYaml[$identifier])) {
+                return $parsedYaml[$identifier];
+            } else {
+                return [];
+            }
+        } else {
+            return [];
+        }
+    }
+
+    /**
+     * Adds a file mapping to the file filesMap.yaml that contains all defined file fields of a content block.
+     * Those will be used by the data processor to provide files information to the frontend.
+     * 
+     * @param string $identifier The identifier of the content block
+     * @param array $fileFields All file fields of the content block, may be a multidimensional array
+     *  if there are nested tables defined.
+     */
+    public static function addFileFieldsToMap(array $fileFields): void
+    {
+        //Create the file if it does not exist already
+        Utility::createIfNot(self::FILES_MAP_PATH, false);
+
+        $identifier = CbBuilderConfig::getIdentifier();
+        $parsedYaml = Yaml::parseFile(self::FILES_MAP_PATH);
+        $parsedYaml[$identifier] = $fileFields;
+        $filesystem = new Filesystem();
+        $filesystem->dumpFile(self::FILES_MAP_PATH, Yaml::dump($parsedYaml, PHP_INT_MAX, 2));
     }
 }
 

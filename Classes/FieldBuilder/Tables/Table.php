@@ -33,6 +33,7 @@ use DS\CbBuilder\Config\CbBuilderConfig;
 use DS\CbBuilder\FieldBuilder\FieldBuilder;
 use DS\CbBuilder\FieldBuilder\Fields\CollectionContainer;
 use DS\CbBuilder\FieldBuilder\Fields\Field;
+use DS\CbBuilder\FieldBuilder\Fields\FileField;
 use DS\CbBuilder\FieldBuilder\Fields\LinebreakField;
 use DS\CbBuilder\FieldBuilder\Fields\PaletteContainer;
 use DS\CbBuilder\FileCreater\FileCreater;
@@ -988,6 +989,26 @@ class Table
         return $sortedParsedTableArray;
     }
 
+    public function collectFilesMap(): array
+    {
+        $files = [];
+        foreach ($this->fields as $value) {
+            if ($value instanceof CollectionTable) {
+                $files[$value->getTable()] = $value->collectFilesMap();
+            } elseif ($value instanceof FileField) {
+                $files[] = $value->getIdentifier();
+            }
+        }
+        return $files;
+    }
+
+    private function _setFilesMap(): void
+    {
+        if ($this instanceof TtContentTable) {
+            FileCreater::addFileFieldsToMap($this->collectFilesMap());
+        }
+    }
+
     /**
      * Parse and generate the table content.
      */
@@ -999,6 +1020,7 @@ class Table
         if (CbBuilderConfig::isCrossParsing()) {
             $parsedTableArray = $this->sortFields($this->tableToArray());
         }
+        $this->_setFilesMap();
         $this->setDefaultCtrl();
         if ($this instanceof TtContentTable) {
             $meta = $this->setMeta();

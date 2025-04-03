@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace DS\CbBuilder\ChildTableFetcher;
 
 use DS\CbBuilder\Utility\SimpleDatabaseQuery;
+use DS\CbBuilder\Utility\Utility;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -98,9 +99,10 @@ final class ChildTableFetcher
     private function _fetchChildTable(array &$array, array $tca, string $parentTableName, int $parentId): void
     {
         $sdq = new SimpleDatabaseQuery();
-        if ($parentTableName === 'sys_file_reference' && array_key_exists('uid_local', $array)) {
+        if ($parentTableName === 'sys_file_reference') {
+            $uidLocal = $sdq->fetch('sys_file_reference', 'uid_local', "uid==$parentId");
             $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-            $array['file'] = $resourceFactory->getFileObject($array['uid_local']);
+            $array['file'] = $resourceFactory->getFileObject($uidLocal[0]['uid_local']);
         } else {
             foreach ($tca as $key => $entry) {
                 if ($key !== 'l10n_parent' && array_key_exists('config', $entry)) {

@@ -757,7 +757,7 @@ final class FileFieldConfig extends Config
      *
      * @return bool Whether the field is read-only.
      */
-    public function isReadOnly(): bool
+    public function isReadOnly(): ?bool
     {
         return $this->readOnly;
     }

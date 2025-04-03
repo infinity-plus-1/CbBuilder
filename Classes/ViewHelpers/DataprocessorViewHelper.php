@@ -50,17 +50,17 @@ class DataprocessorViewHelperException extends Exception {}
  * 
  * <html
  *  xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
- *  xmlns:fh="http://typo3.org/ns/DS/CbBuilder/ViewHelpers"
+ *  xmlns:cb="http://typo3.org/ns/DS/CbBuilder/ViewHelpers"
  *  data-namespace-typo3-fluid="true" >
  * 
  * For database queries:
  * 
- * <fh:dataprocessor source="db" nested="true" where="uid > $uid && (pid == 20 || pid == $pageId)" variables="pageId: 5, uid: 60" order="uid DESC, pid DESC" as="processedData" />
+ * <cb:dataprocessor source="db" nested="true" where="uid > $uid && (pid == 20 || pid == $pageId)" variables="pageId: 5, uid: 60" order="uid DESC, pid DESC" as="processedData" />
  * 
  * or
  * 
  * The content object:
- * <fh:dataprocessor source="page" nested="false" as="processedData" />
+ * <cb:dataprocessor source="page" nested="false" as="processedData" />
  * 
 */
 
@@ -189,7 +189,7 @@ final class DataprocessorViewHelper extends AbstractViewHelper
         }
         return null;
     }
-
+    
     /**
      * Renders the view helper and provides data to the Fluid template.
      */

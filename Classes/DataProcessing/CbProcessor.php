@@ -30,6 +30,7 @@ namespace DS\CbBuilder\DataProcessing;
 
 use DS\CbBuilder\ChildTableFetcher\ChildTableFetcher;
 use DS\CbBuilder\Config\CbBuilderConfig;
+use DS\CbBuilder\FileCreater\FileCreater;
 use DS\CbBuilder\Utility\SimpleDatabaseQuery;
 use DS\CbBuilder\Utility\Utility;
 use DS\CbBuilder\ViewHelpers\DataprocessorViewHelper;
@@ -52,6 +53,27 @@ class CbProcessor implements DataProcessorInterface
      * @param array $processedData Processed data.
      * @return array Processed data with content block information.
      */
+
+    private function _populateFiles(array &$data, int $uid, string $tableName, array|string $fileFields): void
+    {
+        foreach ($data as $key => &$value) {
+            if (is_array($value)) {
+                if (isset($value[0]) && is_array($value[0]) && array_key_exists('uid', $value[0]) && isset($value[0]['uid']))
+                $this->_populateFiles($value[0], $value[0]['uid'], $key, $fileFields[$key]);
+            } else {
+                if ((is_array($fileFields) && in_array($key, $fileFields)) || $key === $fileFields) {
+                    $ctf = new ChildTableFetcher('sys_file_reference', '*', "tablenames=='$tableName'&&uid_foreign==$uid");
+                    $files = $ctf->fetchChilds($ctf->basicFetch());
+                    $data[$key] = [];
+                    foreach ($files as $file) {
+                        $data[$key][] = $file['file'];
+                    }
+                }
+            }
+        }
+    }
+
+
     public function process(
         ContentObjectRenderer $cObj,
         array $contentObjectConfiguration,
@@ -119,6 +141,13 @@ class CbProcessor implements DataProcessorInterface
                 unset($processedData['data'][0]);
             }
         }
+
+        $fileFields = FileCreater::getFieldsMap($identifier);
+
+        if ($fileFields !== []) {
+            $this->_populateFiles($processedData['data'], $uid, 'tt_content', $fileFields);
+        }
+
         return $processedData;
     }
 }
