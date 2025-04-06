@@ -58,8 +58,10 @@ class CbProcessor implements DataProcessorInterface
     {
         foreach ($data as $key => &$value) {
             if (is_array($value)) {
-                if (isset($value[0]) && is_array($value[0]) && array_key_exists('uid', $value[0]) && isset($value[0]['uid']))
-                $this->_populateFiles($value[0], $value[0]['uid'], $key, $fileFields[$key]);
+                foreach ($value as &$entry) {
+                    if (is_array($entry) && array_key_exists('uid', $entry) && isset($entry['uid']))
+                    $this->_populateFiles($entry, $entry['uid'], $key, $fileFields[$key]);
+                }
             } else {
                 if ((is_array($fileFields) && in_array($key, $fileFields)) || $key === $fileFields) {
                     $ctf = new ChildTableFetcher('sys_file_reference', '*', "tablenames=='$tableName'&&uid_foreign==$uid");
