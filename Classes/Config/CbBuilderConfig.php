@@ -426,7 +426,8 @@ final class CbBuilderConfig
                         "The file 'cbBuilder/Configuration/contentBlocks.yaml' does not contain any content blocks. Please run 'cb:make' before running 'cb:update'."
                     );
                 }
-                $GLOBALS['CbBuilder'] = $contentBlocks;
+                
+                $GLOBALS['CbBuilder']['contentBlocks'] = $contentBlocks['contentBlocks'];
             } else {
                 throw new RuntimeException(
                     "The file 'cbBuilder/Configuration/contentBlocks.yaml' does not contain a 'contentBlocks' key. Please run 'cb:repair' in the console."

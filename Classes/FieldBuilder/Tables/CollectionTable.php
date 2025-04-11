@@ -43,6 +43,27 @@ final class CollectionTable extends Table
      */
     protected ?CollectionContainer $collectionContainer = null;
 
+
+    /**
+     * Gets the label of the field.
+     * 
+     * @return string The label of the field.
+     */
+    public function getLabel(): string
+    {
+        return $this->collectionContainer->getLabel();
+    }
+
+    /**
+     * Gets the classes applied to the field.
+     * 
+     * @return array The classes applied to the field.
+     */
+    public function getClasses(): array
+    {
+        return $this->collectionContainer->getClasses();
+    }
+
     /**
      * Get the collection container.
      *

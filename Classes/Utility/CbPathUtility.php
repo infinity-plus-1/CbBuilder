@@ -106,6 +106,34 @@ final class CbPathUtility
     }
 
     /**
+     * Scans a directory for JS files, optionally filtering by a specific file name.
+     *
+     * @param DirectoryIterator $directoryIterator The iterator for the directory to scan.
+     * @param string $fileName Optional file name to filter results by. If empty, all JS files are returned.
+     *
+     * @return array List of paths to JS files matching the criteria.
+     */
+    public static function scanForJsFiles(DirectoryIterator $directoryIterator, string $fileName = ''): array
+    {
+        $files = [];
+        while ($directoryIterator->valid()) {
+            if ($directoryIterator->isFile() && $directoryIterator->getExtension() === 'js') {
+                if ($fileName === '') {
+                    // Add all JS files if no specific file name is provided.
+                    $files[] = $directoryIterator->getPath() . '/' . $directoryIterator->getFilename();
+                } else {
+                    // If a specific file name is provided, return immediately if found.
+                    if ($fileName === $directoryIterator->getFilename()) {
+                        return [$directoryIterator->getPath() . '/' . $directoryIterator->getFilename()];
+                    }
+                }
+            }
+            $directoryIterator->next();
+        }
+        return $files;
+    }
+
+    /**
      * Retrieves a DirectoryIterator for the TCA overrides directory of an extension.
      *
      * @param string $extensionPath Path to the extension directory.

@@ -54,6 +54,7 @@ class CbUpdateCommand extends Command
             CbBuilderConfig::loadLocalConfig($identifier);
             FileCreater::makeCbExtLocalConf();
             FileCreater::updateCssAssets($identifier);
+            FileCreater::updateJsAssets($identifier);
             SqlCreater::createCbTable($identifier);
             $GLOBALS['CbBuilder']['SqlCreater'] = new SqlCreater();
             $fieldBuilder = new FieldBuilder(CbBuilderConfig::getExtensionPath($identifier), $identifier);

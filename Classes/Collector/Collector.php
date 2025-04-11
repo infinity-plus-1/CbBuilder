@@ -238,4 +238,27 @@ final class Collector
         }
         return $array;
     }
+
+    /**
+     * Collects all meta information of the fields.yaml except the fields array.
+     *
+     * @param string $identifier The identifier of the current content block
+     * @return array Array of meta information.
+     */
+    public static function collectFieldsYamlMeta(string $identifier): array
+    {
+        $fieldsYaml = CbBuilderConfig::getContentBlockPath($identifier) . '/fields.yaml';
+        $filesystem = new Filesystem();
+        if ($filesystem->exists($fieldsYaml)) {
+            $meta = [];
+            $entries = Yaml::parseFile($fieldsYaml);
+            foreach ($entries as $key => $entry) {
+                if ($key !== 'fields') {
+                    $meta[$key] = $entry;
+                }
+            }
+            return $meta;
+        }
+        return [];
+    }
 }

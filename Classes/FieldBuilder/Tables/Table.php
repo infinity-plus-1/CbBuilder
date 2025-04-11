@@ -40,13 +40,12 @@ use DS\CbBuilder\FileCreater\FileCreater;
 use DS\CbBuilder\Wrapper\Wrapper;
 use DS\CbBuilder\Utility\ArrayParser;
 use DS\CbBuilder\Utility\SimpleDatabaseQuery;
-use DS\CbBuilder\Utility\Utility;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\TypeInfo\Type\CollectionType;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Represents a foreign type configuration.
@@ -902,11 +901,28 @@ class Table
         $file = __DIR__ . "/../../../Configuration/classesMap.yaml";
         $filesystem = new Filesystem();
         $map = [];
+        $mainClasses = [];
         if ($this instanceof TtContentTable) {
             if (!$filesystem->exists($file)) {
                 FileCreater::makeClassesMapYaml($cbIdentifier);
             }
             $map = Yaml::parse(file_get_contents($file));
+
+            $meta = Collector::collectFieldsYamlMeta($cbIdentifier);
+
+            if (is_array($meta) && $meta !== []) {
+                if (isset($meta['classes'])) {
+                    $classes = $meta['classes'];
+                    if (is_string($classes) && $classes !== '') {
+                        $classes = GeneralUtility::trimExplode(',', $classes);
+                    }
+                    
+                    if (is_array($classes) && $classes !== []) {
+                        $mainClasses = $classes;
+                    }
+                }
+            }
+
             if (!isset($map[$cbIdentifier])) {
                 $map[$cbIdentifier] = [];
             }
@@ -918,10 +934,11 @@ class Table
                 if ($classes !== []) {
                     $subMap[$identifier] = $classes;
                 }
-            } else {
+            }
+            if (!$field instanceof TtContentTable) {
                 if ($field->getLabel() !== '') $identifier = $field->getLabel();
-                if ($field->getClasses() !== []) {
-                    $fieldClasses = $field->getClasses();
+                $fieldClasses = $field->getClasses();
+                if ($fieldClasses !== []) { 
                     if (is_array($fieldClasses) && $fieldClasses !== [] && isset($fieldClasses[0]) && $fieldClasses[0] !== '') {
                         $subMap[$identifier] = $fieldClasses;
                     }
@@ -931,6 +948,9 @@ class Table
         if ($this instanceof TtContentTable) {
             unset($map[$cbIdentifier]);
             $map[$cbIdentifier] = $subMap;
+            if ($mainClasses !== []) {
+                $map[$cbIdentifier]['main'] = $mainClasses;
+            }
             $map = Yaml::dump($map, PHP_INT_MAX, 2);
             
             file_put_contents($file, $map);

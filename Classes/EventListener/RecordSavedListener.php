@@ -30,7 +30,6 @@ namespace DS\CbBuilder\EventListener;
 
 use DS\CbBuilder\Event\RecordSavedToDatabaseEvent;
 use DS\CbBuilder\Utility\SimpleDatabaseQuery;
-use DS\CbBuilder\Utility\Utility;
 use Exception;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 
@@ -52,10 +51,26 @@ final readonly class RecordSavedListener
         $table = $event->getTable();
         $dataHandler = $event->getDataHandler();
         $actualUid = 0;
-        
+
         // Determine the actual UID if the record is new.
         if ($status === 'new') {
-            $actualUid = $dataHandler->substNEWwithIDs[$id];
+            if (isset($dataHandler->substNEWwithIDs[$id])) {
+                $actualUid = $dataHandler->substNEWwithIDs[$id];
+            } else {
+                if (isset($dataHandler->errorLog) && is_array($dataHandler->errorLog) && $dataHandler->errorLog !== []) {
+                    $errors = '';
+                    foreach ($dataHandler->errorLog as $error) {
+                        $errors .= $error . "\n";
+                    }
+                    throw new Exception($errors);
+                } else {
+                    throw new Exception (
+                        "An unknown error occured while trying to save to the database.\n" .
+                        "Please try to add the content manually to the database to check for exact errors."
+                    );
+                }
+            }
+            
         }
 
         // Check if the saved record is from the 'tt_content' table.

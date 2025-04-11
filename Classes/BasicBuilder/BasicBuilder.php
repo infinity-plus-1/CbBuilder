@@ -187,6 +187,7 @@ final class BasicBuilder
         FileCreater::makeCbExtLocalConf();
         FileCreater::makeCbExtLocalConf();
         FileCreater::updateCssAssets($identifier);
+        FileCreater::updateJsAssets($identifier);
         FileCreater::addIcon($identifier);
     }
 }

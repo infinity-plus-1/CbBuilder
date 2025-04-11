@@ -226,7 +226,7 @@ final class FileCreater
         if (!$filesystem->exists($templatesPath) || !$filesystem->exists($feHtmlPath)) {
             FileCreater::makeFePreviewHtml($identifier);
         }
-        Wrapper::inject($feHtmlPath, $feFiles, true, '', $identifier, '<!--&%!§(§?%&', '&%?§)§!%& DO NOT DELTE THIS PART-->', '');
+        Wrapper::inject($feHtmlPath, $feFiles, true, '', $identifier . '_css', '<!--&%!§(§?%&', '&%?§)§!%& DO NOT DELTE THIS PART-->', '');
 
         //Backend
         $beExtPath = CbBuilderConfig::getExtPublicCbBackendPath($identifier);
@@ -250,7 +250,72 @@ final class FileCreater
         if (!$filesystem->exists($templatesPath) || !$filesystem->exists($beHtmlPath)) {
             FileCreater::makeBePreviewHtml($identifier);
         }
-        Wrapper::inject($beHtmlPath, $beFiles, true, '', $identifier, '<!--&%!§(§?%&', '&%?§)§!%& DO NOT DELTE THIS PART-->', '');
+        Wrapper::inject($beHtmlPath, $beFiles, true, '', $identifier . '_css', '<!--&%!§(§?%&', '&%?§)§!%& DO NOT DELTE THIS PART-->', '');
+    }
+
+    /**
+     * Collect JS files and update the corresponding fe- and be_preview.html files.
+     * 
+     * Symlinks are created if they do not exists.
+     * Point from-to: Root/Public/_assets/PathHash -> Extension/Resources/Public -> ContentBlock assets
+     * 
+     * @param string $identifier The identifier of the ContentBlock
+     */
+    public static function updateJsAssets(string $identifier): void
+    {
+        $filesystem = new Filesystem();
+        FileCreater::createPublicSymlink($identifier);
+        FileCreater::createPublicAssetSymlink($identifier);
+        $absPubAssetPath = CbBuilderConfig::getExtensionPublicPath($identifier) . "/cb/$identifier/assets";
+        
+        
+        //Frontend
+        $feExtPath = CbBuilderConfig::getExtPublicCbFrontendPath($identifier);
+        $feFiles = '';
+        $fePath = $absPubAssetPath . '/frontend';
+        $jsFiles = CbPathUtility::scanForJsFiles(new DirectoryIterator($fePath));
+        foreach ($jsFiles as $file) {
+            $fileData = CbPathUtility::getFileData($file);
+            if ($fileData) {
+                if (isset($fileData['type']) && strtolower($fileData['type']) === 'js') {
+                    if (isset($fileData['name'])) {
+                        $fileIdentifier = "cb_$identifier" . '_fe_' . $fileData['name'] . '_' . $fileData['type'];
+                        $filePath = $feExtPath . '/' . $fileData['name'] . '.' . $fileData['type'];
+                        $feFiles .= '<f:asset.script identifier="' . $fileIdentifier . '" src="' . $filePath . '"' . " />\n";
+                    }
+                }
+            }
+        }
+        $templatesPath = CbBuilderConfig::getTemplatesPath();
+        $feHtmlPath = $templatesPath . '/fe_preview.html';
+        if (!$filesystem->exists($templatesPath) || !$filesystem->exists($feHtmlPath)) {
+            FileCreater::makeFePreviewHtml($identifier);
+        }
+        Wrapper::inject($feHtmlPath, $feFiles, true, '', $identifier . '_js', '<!--&%!§(§?%&', '&%?§)§!%& DO NOT DELTE THIS PART-->', '');
+
+        //Backend
+        $beExtPath = CbBuilderConfig::getExtPublicCbBackendPath($identifier);
+        $beFiles = '';
+        $bePath = $absPubAssetPath . '/backend';
+        $jsFiles = CbPathUtility::scanForJsFiles(new DirectoryIterator($bePath));
+        foreach ($jsFiles as $file) {
+            $fileData = CbPathUtility::getFileData($file);
+            if ($fileData) {
+                if (isset($fileData['type']) && strtolower($fileData['type']) === 'js') {
+                    if (isset($fileData['name'])) {
+                        $fileIdentifier = "cb_$identifier" . '_be_' . $fileData['name'] . '_' . $fileData['type'];
+                        $filePath = $beExtPath . '/' . $fileData['name'] . '.' . $fileData['type'];
+                        $beFiles .= '<f:asset.script identifier="' . $fileIdentifier . '" src="' . $filePath . '"' . " />\n";
+                    }
+                }
+            }
+        }
+        $templatesPath = CbBuilderConfig::getTemplatesPath();
+        $beHtmlPath = $templatesPath . '/be_preview.html';
+        if (!$filesystem->exists($templatesPath) || !$filesystem->exists($beHtmlPath)) {
+            FileCreater::makeBePreviewHtml($identifier);
+        }
+        Wrapper::inject($beHtmlPath, $beFiles, true, '', $identifier . '_js', '<!--&%!§(§?%&', '&%?§)§!%& DO NOT DELTE THIS PART-->', '');
     }
 
     /**
